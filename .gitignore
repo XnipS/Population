@@ -1,0 +1,8 @@
+# Build output
+build/
+# Build cache
+.cache/
+# Vscode
+.vscode/
+# Imgui
+imgui.ini
