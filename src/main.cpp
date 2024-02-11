@@ -2,21 +2,27 @@
 
 #include <cstdio>
 #include <iostream>
+#include <string>
 #include <thread>
 
 #include "../include/core.h"
+#include "../include/csvLoader.h"
 #include "../include/renderEngine.h"
 
 renderEngine* render = nullptr;
 
 Uint32 frameStart;
 int currentTickTime;
-
+std::string test = "/home/luke/Projects/Population/population.csv";
+std::vector<dataStructure> data;
 // Entrypoint
 int main(int argc, char* args[])
 {
     // Engines
     render = new renderEngine();
+
+    // Testing loader
+    data = csvLoader::LoadCSV(&test);
 
     // Start
     render->Initialise("Rank Adjuster", 1280, 720);
