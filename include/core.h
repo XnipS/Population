@@ -5,3 +5,5 @@
 #define D_TARGET_TICKRATE 60
 #define D_TICKRATE_TIME (1000 / D_TARGET_TICKRATE)
 #define D_DELTATIME (1.0 / D_TARGET_TICKRATE)
+// Population specifics
+#define P_LARGETIME (5 * (1000 * 60 * 60))

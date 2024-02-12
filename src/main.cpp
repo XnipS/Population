@@ -15,6 +15,7 @@ Uint32 frameStart;
 int currentTickTime;
 std::string test = "/home/luke/Projects/Population/population.csv";
 std::vector<dataStructure> data;
+finalData fData;
 // Entrypoint
 int main(int argc, char* args[])
 {
@@ -24,6 +25,10 @@ int main(int argc, char* args[])
     // Testing loader
     data = csvLoader::LoadCSV(&test);
     csvLoader::RepairData(&data);
+    fData = csvLoader::SumData(&data);
+    for (int i = 0; i < fData.ids.size(); i++) {
+        std::cout << (fData.totalTimes[i] / 1000.0f / 60.0f / 60.0f) << std::endl;
+    }
 
     // Start
     render->Initialise("Rank Adjuster", 1280, 720);

@@ -1,4 +1,5 @@
 #include "../include/csvLoader.h"
+#include "../include/core.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -106,7 +107,7 @@ void csvLoader::RepairData(std::vector<dataStructure>* data)
                 // Last entry was connection
                 if (trueVal) {
                     // New value is connection
-                    std::cout << "Disorganised data detected! (expected disconnection) " << *nextId << std::endl;
+                    std::cout << "Disorganised data detected! (expected disconnection) ID:" << *nextId << std::endl;
                     (*data)[i].id = 0;
                 } else {
                     // New value is disconnection CORRECT
@@ -119,10 +120,49 @@ void csvLoader::RepairData(std::vector<dataStructure>* data)
                     users.SetValue(&entry, &trueVal);
                 } else {
                     // New value is disconnection
-                    std::cout << "Disorganised data detected! (expected connection) " << *nextId << std::endl;
+                    std::cout << "Disorganised data detected! (expected connection) ID:" << *nextId << std::endl;
                     (*data)[i].id = 0;
                 }
             }
         }
     }
+}
+
+finalData csvLoader::SumData(std::vector<dataStructure>* data)
+{
+    finalData ret;
+    long currentId;
+    // Foreach data point
+    for (int i = 0; i < data->size(); i++) {
+        currentId = (*data)[i].id;
+        // Check if the id is valid
+        if (currentId == 0) {
+            continue;
+        } else {
+            int entry = ret.Has(&currentId);
+            if (entry == -1) {
+                // New entry
+                ret.ids.push_back(currentId);
+                ret.totalTimes.push_back(0);
+                ret.lastTime.push_back((*data)[i].time);
+            } else {
+                // Old entry
+                if ((*data)[i].value) {
+                    // Connection
+                    // Mark time
+                    ret.lastTime[entry] = (*data)[i].time;
+                } else {
+                    // Disconnection
+                    // Sum time since connection
+                    long delta = (*data)[i].time - ret.lastTime[entry];
+                    // Check for large connection time (due to csvLoader::RepairData)
+                    if (delta > P_LARGETIME) {
+                        std::cout << "Large time detected! ID:" << currentId << " DELTA:" << delta << " (UnixTime)" << std::endl;
+                    }
+                    ret.totalTimes[entry] += delta;
+                }
+            }
+        }
+    }
+    return ret;
 }

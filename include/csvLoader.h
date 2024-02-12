@@ -8,10 +8,26 @@ struct dataStructure {
     int value;
 };
 
+struct finalData {
+    std::vector<long> ids;
+    std::vector<long> totalTimes;
+    std::vector<long> lastTime;
+    int Has(long* id)
+    {
+        for (int i = 0; i < ids.size(); i++) {
+            if (*id == ids[i]) {
+                return i;
+            }
+        }
+        return -1;
+    };
+};
+
 class csvLoader {
 public:
     static std::vector<dataStructure> LoadCSV(std::string* filename);
     static void RepairData(std::vector<dataStructure>* data);
+    static finalData SumData(std::vector<dataStructure>* data);
 
 private:
     class dictionary {
