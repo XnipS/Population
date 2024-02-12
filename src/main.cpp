@@ -23,6 +23,7 @@ int main(int argc, char* args[])
 
     // Testing loader
     data = csvLoader::LoadCSV(&test);
+    csvLoader::RepairData(&data);
 
     // Start
     render->Initialise("Rank Adjuster", 1280, 720);
