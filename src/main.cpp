@@ -24,8 +24,10 @@ int main(int argc, char* args[])
 
     // Testing loader
     data = csvLoader::LoadCSV(&test);
-    csvLoader::RepairData(&data);
-    fData = csvLoader::SumData(&data);
+    csvLoader::RepairRawData(&data);
+    fData = csvLoader::SumRawData(&data);
+    csvLoader::SortFinalData(&fData);
+
     for (int i = 0; i < fData.ids.size(); i++) {
         std::cout << (fData.totalTimes[i] / 1000.0f / 60.0f / 60.0f) << std::endl;
     }

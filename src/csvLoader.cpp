@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <new>
 #include <ostream>
 #include <sstream>
@@ -69,7 +70,7 @@ std::vector<dataStructure> csvLoader::LoadCSV(std::string* filename)
     return dataFile;
 }
 
-void csvLoader::RepairData(std::vector<dataStructure>* data)
+void csvLoader::RepairRawData(std::vector<dataStructure>* data)
 {
     // Saved users
     dictionary users;
@@ -128,7 +129,7 @@ void csvLoader::RepairData(std::vector<dataStructure>* data)
     }
 }
 
-finalData csvLoader::SumData(std::vector<dataStructure>* data)
+finalData csvLoader::SumRawData(std::vector<dataStructure>* data)
 {
     finalData ret;
     long currentId;
@@ -142,9 +143,7 @@ finalData csvLoader::SumData(std::vector<dataStructure>* data)
             int entry = ret.Has(&currentId);
             if (entry == -1) {
                 // New entry
-                ret.ids.push_back(currentId);
-                ret.totalTimes.push_back(0);
-                ret.lastTime.push_back((*data)[i].time);
+                ret.AddEntry(&currentId, 0, &(*data)[i].time);
             } else {
                 // Old entry
                 if ((*data)[i].value) {
@@ -165,4 +164,25 @@ finalData csvLoader::SumData(std::vector<dataStructure>* data)
         }
     }
     return ret;
+}
+
+void csvLoader::SortFinalData(finalData* data)
+{
+    // Make new memory of data
+    finalData newData = finalData(*data);
+    // Sort data
+    std::sort(std::begin(newData.totalTimes), std::end(newData.totalTimes));
+    // Match ids to new array
+    for (int i = 0; i < newData.totalTimes.size(); i++) {
+        int entry = data->HasTime(&newData.totalTimes[i]);
+        if (entry == -1) {
+            // New entry????
+            std::cout << "New array is missing data? (Memory error)" << std::endl;
+        } else {
+            // Assign true id
+            newData.ids[i] = data->ids[entry];
+        }
+    }
+    // Pass final data to pointer
+    *data = finalData(newData);
 }
