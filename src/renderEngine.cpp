@@ -98,7 +98,7 @@ void renderEngine::Update()
     // ImGui::Separator();
     ImGui::EndMainMenuBar();
 
-    // Step 1
+    // Input gui
     ImGui::Begin("Input", NULL,
         commonFlags);
 
@@ -109,6 +109,23 @@ void renderEngine::Update()
         csvLoader::RepairRawData(&data);
         fData = csvLoader::SumRawData(&data);
         csvLoader::SortFinalData(&fData);
+    }
+    if (fData.ids.size() > 0) {
+        ImGui::Text("Loaded data:");
+        if (ImGui::BeginTable("table1", 2, flags)) {
+            ImGui::TableSetupColumn("User ID", ImGuiTableColumnFlags_WidthFixed);
+            ImGui::TableSetupColumn("Sum Time (h)", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableHeadersRow();
+
+            for (int i = 0; i < fData.ids.size(); i++) {
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::Text("%ld", fData.ids[i]);
+                ImGui::TableSetColumnIndex(1);
+                ImGui::Text("%lf", fData.totalTimes[i] / 1000.0 / 60.0 / 60);
+            }
+        }
+        ImGui::EndTable();
     }
 
     ImGui::End();
