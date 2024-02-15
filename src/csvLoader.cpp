@@ -10,11 +10,10 @@
 #include <string>
 #include <vector>
 
-std::vector<dataStructure> csvLoader::LoadCSV(std::string* filename)
+std::vector<dataStructure> csvLoader::LoadCSV(char* filename)
 {
-    std::cout << "Start!" << std::endl;
     // Variables
-    std::ifstream target(*filename);
+    std::ifstream target(filename);
     std::string text;
     std::vector<std::string> csvFile;
 
@@ -66,7 +65,6 @@ std::vector<dataStructure> csvLoader::LoadCSV(std::string* filename)
     }
     // Close file stream
     target.close();
-    std::cout << "Done!" << std::endl;
     return dataFile;
 }
 

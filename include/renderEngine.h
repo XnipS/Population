@@ -1,5 +1,6 @@
 #pragma once
 
+#include "csvLoader.h"
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -8,6 +9,9 @@ class renderEngine {
 public:
     renderEngine();
     ~renderEngine();
+
+    char* path;
+    finalData fData;
 
     void Initialise(const char* title, int w, int h);
 

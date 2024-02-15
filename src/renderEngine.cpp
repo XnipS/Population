@@ -102,6 +102,15 @@ void renderEngine::Update()
     ImGui::Begin("Input", NULL,
         commonFlags);
 
+    ImGui::InputText("Input csv file", path, 60);
+    if (ImGui::Button("Load file")) {
+        std::vector<dataStructure> data;
+        data = csvLoader::LoadCSV(path);
+        csvLoader::RepairRawData(&data);
+        fData = csvLoader::SumRawData(&data);
+        csvLoader::SortFinalData(&fData);
+    }
+
     ImGui::End();
 
     if (popup_id == "Error_UnevenTemps") {

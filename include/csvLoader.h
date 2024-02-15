@@ -40,7 +40,7 @@ struct finalData {
 
 class csvLoader {
 public:
-    static std::vector<dataStructure> LoadCSV(std::string* filename);
+    static std::vector<dataStructure> LoadCSV(char* filename);
     static void RepairRawData(std::vector<dataStructure>* data);
     static finalData SumRawData(std::vector<dataStructure>* data);
     static void SortFinalData(finalData* data);
